@@ -57,14 +57,14 @@ public class scannerView extends AppCompatActivity implements ZXingScannerView.R
     @Override
     public void handleResult(Result rawResult) {
         String data=rawResult.getText().toString();
-        MainActivity.scantxt.setText(rawResult.getText());
+        scanqr.scantxt.setText(rawResult.getText());
     onBackPressed();//For further actions on data
         Toast.makeText(this,rawResult.getText(),Toast.LENGTH_SHORT).show();
-        MainActivity.arrOfStr = rawResult.getText().split("_", 5);
+        scanqr.arrOfStr = rawResult.getText().split("_", 5);
 //        for(int i = 0; i < MainActivity.arrOfStr.length; i++){
 //            System.out.print(MainActivity.arrOfStr[i] + "\n");
 //        }
-        MainActivity.UpdateText();
+        scanqr.UpdateText();
         dbref.push().setValue(data)
           .addOnCompleteListener(new OnCompleteListener<Void>() {
               @Override

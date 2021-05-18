@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "111885956960",
+    "project_id": "smart-inventory-management-app",
+    "storage_bucket": "smart-inventory-management-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111885956960:android:abcb52d546faf604acd005",
+        "android_client_info": {
+          "package_name": "com.example.edai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111885956960-0rofsomn098k2iqoadtmg90dskp3hgti.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCDac-XAWzWEJvhlEHLoMME0g4LPON4X0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111885956960-0rofsomn098k2iqoadtmg90dskp3hgti.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111885956960:android:47ae2cbcf3972129acd005",
+        "android_client_info": {
+          "package_name": "com.example.smartinventorymanagementapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111885956960-0rofsomn098k2iqoadtmg90dskp3hgti.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCDac-XAWzWEJvhlEHLoMME0g4LPON4X0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111885956960-0rofsomn098k2iqoadtmg90dskp3hgti.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
