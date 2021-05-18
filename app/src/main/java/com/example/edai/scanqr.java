@@ -10,8 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class scanqr extends AppCompatActivity {
-    Button scanbtn,uploadbtn;
+    Button scanbtn,uploadbtn,btnLogout;
     TextView productspecview;
 
     public static TextView scantxt;                                  //declaring scantext for input qr code
@@ -39,6 +41,8 @@ public class scanqr extends AppCompatActivity {
         productspecview.setVisibility(View.VISIBLE);
         productspecdisplay.setVisibility(View.VISIBLE);
         uploadbtn.setVisibility(View.VISIBLE);
+        btnLogout.setVisibility(View.VISIBLE);
+
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +54,21 @@ public class scanqr extends AppCompatActivity {
         uploadbtn=(Button)findViewById(R.id.uploadbtn);
         productspecview=(TextView)findViewById(R.id.productspecview);
         productspecdisplay =(EditText)findViewById(R.id.productspecdisplay);
+        btnLogout = findViewById(R.id.buttonLogout);
 
         productspecview.setVisibility(View.INVISIBLE);
         productspecdisplay.setVisibility(View.INVISIBLE);
         uploadbtn.setVisibility(View.INVISIBLE);
+        btnLogout.setVisibility(View.INVISIBLE);
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intToSignup = new Intent(scanqr.this, login.class);
+                startActivity(intToSignup);
+            }
+        });
 
     }
 }
