@@ -1,55 +1,47 @@
 package com.example.edai;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.os.Handler;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-    Button scanbtn;
-    Button uploadbtn;
-    public static TextView scantxt;
-    public static String[] arrOfStr;
-    public static EditText multiText;
 
-
-    public static void UpdateText() {
-        String temp=null;
-
-        try{
-            if(arrOfStr!=null)
-            {temp="Product Id: "+arrOfStr[0]+"\nName: "+arrOfStr[1]+"\nQuantity: "+arrOfStr[2]+"\nCompany: "+arrOfStr[3]+"\nColor: "+arrOfStr[4];}
-            multiText.setText(temp);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            multiText.setText("");
-        }
-    }
+    //Variables
+    android.view.animation.Animation topAnim;
+    android.view.animation.Animation bottomAnim;
+    ImageView image;
+    TextView smart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        scantxt=(TextView)findViewById(R.id.scantext);
-        scanbtn=(Button) findViewById(R.id.scanbtn);
+        //Animations
+        topAnim = AnimationUtils.loadAnimation(this,R.anim.top_animation);
+        bottomAnim = AnimationUtils.loadAnimation(this,R.anim.bottom_animation);
 
-        multiText=(EditText)findViewById(R.id.scantxt2);
+        //Hooks
+        image = findViewById(R.id.logo);
+        smart = findViewById(R.id.textView);
+        image.setAnimation(topAnim);
+        smart.setAnimation(bottomAnim);
 
-        scanbtn.setOnClickListener(new View.OnClickListener() {
+        int SPLASH_SCREEN = 2000;
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),scannerView.class));
-
+            public void run() {
+                Intent animIntent = new Intent(MainActivity.this, signup.class);
+                startActivity(animIntent);
+                finish();
             }
-        });
+        }, SPLASH_SCREEN);
+
     }
 }
