@@ -32,7 +32,6 @@ public class scannerView extends AppCompatActivity implements ZXingScannerView.R
         scannerView=new ZXingScannerView(this);
 
         setContentView(scannerView);
-        dbref= FirebaseDatabase.getInstance().getReference("qrdata");
 
         Dexter.withContext(getApplicationContext())
                 .withPermission(Manifest.permission.CAMERA)
@@ -65,13 +64,7 @@ public class scannerView extends AppCompatActivity implements ZXingScannerView.R
 //            System.out.print(MainActivity.arrOfStr[i] + "\n");
 //        }
         scanqr.UpdateText();
-        dbref.push().setValue(data)
-          .addOnCompleteListener(new OnCompleteListener<Void>() {
-              @Override
-              public void onComplete(@NonNull Task<Void> task) {
 
-              }
-          });
     }
 
     @Override

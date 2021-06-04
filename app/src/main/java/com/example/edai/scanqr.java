@@ -9,8 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class scanqr extends AppCompatActivity {
     Button scanbtn,uploadbtn,btnLogout;
@@ -19,6 +22,8 @@ public class scanqr extends AppCompatActivity {
     public static TextView scantxt;                                  //declaring scantext for input qr code
     public static String[] arrOfStr;                                //declaring array to store incoming data
     public static EditText productspecdisplay;                     //declaring multitext to display data
+    DatabaseReference data_reff;
+    Inventory products;
 
 
 
@@ -44,6 +49,20 @@ public class scanqr extends AppCompatActivity {
         btnLogout.setVisibility(View.VISIBLE);
 
     }
+//    public void upload_data(View view){
+//        products.setProduct_Id(Integer.parseInt(arrOfStr[0]));
+//        products.setProduct_name(arrOfStr[1]);
+//        products.setProduct_quantity(Integer.parseInt(arrOfStr[2]));
+//        products.setProduct_company(arrOfStr[3]);
+//        products.setProduct_color(arrOfStr[4]);
+//
+//        data_reff.push().setValue(products);
+//        Toast.makeText(this, arrOfStr[1],Toast.LENGTH_LONG).show();
+//
+//        Toast.makeText(this, "Data uploaded successfully",Toast.LENGTH_LONG).show();
+//
+//
+//    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +79,23 @@ public class scanqr extends AppCompatActivity {
         productspecdisplay.setVisibility(View.INVISIBLE);
         uploadbtn.setVisibility(View.INVISIBLE);
         btnLogout.setVisibility(View.INVISIBLE);
+        products = new Inventory();
+        data_reff = FirebaseDatabase.getInstance().getReference().child("Inventory");
+
+        uploadbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                products.setProduct_Id(Integer.parseInt(arrOfStr[0]));
+                products.setProduct_name(arrOfStr[1]);
+                products.setProduct_quantity(Integer.parseInt(arrOfStr[2]));
+                products.setProduct_company(arrOfStr[3]);
+                products.setProduct_color(arrOfStr[4]);
+
+                data_reff.push().setValue(products);
+
+                Toast.makeText(scanqr.this, "Data uploaded successfully",Toast.LENGTH_LONG).show();
+            }
+        });
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
