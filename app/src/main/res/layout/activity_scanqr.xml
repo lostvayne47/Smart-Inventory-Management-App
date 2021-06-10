@@ -86,6 +86,7 @@
         android:layout_marginEnd="159dp"
         android:layout_marginBottom="80dp"
         android:backgroundTint="#8BC34A"
+        android:onClick="upload_database"
         android:text="Upload to Database"
         android:textSize="20sp"
         app:cornerRadius="50dp"

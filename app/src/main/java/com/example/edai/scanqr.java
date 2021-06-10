@@ -1,29 +1,42 @@
 package com.example.edai;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.service.autofill.Dataset;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class scanqr extends AppCompatActivity {
     Button scanbtn,uploadbtn,btnLogout;
     TextView productspecview;
 
-    public static TextView scantxt;                                  //declaring scantext for input qr code
+    boolean update_flag,filter_flag=true;
+    public static TextView scantxt;                                 //declaring scantext for input qr code
     public static String[] arrOfStr;                                //declaring array to store incoming data
     public static EditText productspecdisplay;                     //declaring multitext to display data
-    DatabaseReference data_reff;
-    Inventory products;
+    DatabaseReference data_reff,update_data;                                   //declaring database objects
+    Inventory products;                                            //declaring products object
 
 
 
@@ -49,20 +62,60 @@ public class scanqr extends AppCompatActivity {
         btnLogout.setVisibility(View.VISIBLE);
 
     }
-//    public void upload_data(View view){
-//        products.setProduct_Id(Integer.parseInt(arrOfStr[0]));
-//        products.setProduct_name(arrOfStr[1]);
-//        products.setProduct_quantity(Integer.parseInt(arrOfStr[2]));
-//        products.setProduct_company(arrOfStr[3]);
-//        products.setProduct_color(arrOfStr[4]);
-//
-//        data_reff.push().setValue(products);
-//        Toast.makeText(this, arrOfStr[1],Toast.LENGTH_LONG).show();
-//
-//        Toast.makeText(this, "Data uploaded successfully",Toast.LENGTH_LONG).show();
-//
-//
-//    }
+
+    public void upload_database(View view) {
+
+        //call update data function to check if the product is already present
+        //if already present then only update quantity in the same branch/node
+        //need to get reference of the same branch
+        filter_flag=true;
+        update_data();
+
+    }
+
+    public void update_data(){
+//        data_reff.child(String.valueOf(arrOfStr[0])).child("product_quantity").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DataSnapshot> task) {
+//                if (!task.isSuccessful()) {
+//                    Log.i("firebase", "No Duplicate Found", task.getException());
+//                }
+//                else {
+//                    Log.i("firebase", String.valueOf(task.getResult().getValue()));
+//                }
+//            }
+//        });
+        data_reff.child(arrOfStr[0]).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                Inventory inventory=snapshot.getValue(Inventory.class);
+                if(inventory==null){
+                    Log.i("Info","Directory does not exist");
+
+                    products = new Inventory(Integer.parseInt(arrOfStr[0]), arrOfStr[1], arrOfStr[3], arrOfStr[4], Integer.parseInt(arrOfStr[2]));
+                    data_reff.child(String.valueOf(products.getProduct_Id())).setValue(products);
+                    filter_flag=false;
+                    Log.i("Info","Data Added");
+                    Toast.makeText(scanqr.this, "Data uploaded successfully", Toast.LENGTH_LONG).show();
+                }else
+                {
+                    if(filter_flag) {
+                        inventory.product_display();
+                        Toast.makeText(scanqr.this, "Data is already present", Toast.LENGTH_LONG).show();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,24 +132,11 @@ public class scanqr extends AppCompatActivity {
         productspecdisplay.setVisibility(View.INVISIBLE);
         uploadbtn.setVisibility(View.INVISIBLE);
         btnLogout.setVisibility(View.INVISIBLE);
-        products = new Inventory();
+
         data_reff = FirebaseDatabase.getInstance().getReference().child("Inventory");
 
-        uploadbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                products.setProduct_Id(Integer.parseInt(arrOfStr[0]));
-                products.setProduct_name(arrOfStr[1]);
-                products.setProduct_quantity(Integer.parseInt(arrOfStr[2]));
-                products.setProduct_company(arrOfStr[3]);
-                products.setProduct_color(arrOfStr[4]);
 
-                data_reff.push().setValue(products);
-
-                Toast.makeText(scanqr.this, "Data uploaded successfully",Toast.LENGTH_LONG).show();
-            }
-        });
-
+        //update_data();
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
