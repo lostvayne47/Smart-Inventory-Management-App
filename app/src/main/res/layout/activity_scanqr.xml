@@ -79,24 +79,43 @@
         app:layout_constraintVertical_bias="0.059" />
 
     <Button
-        android:id="@+id/uploadbtn"
-        android:layout_width="wrap_content"
+        android:id="@+id/addbtn"
+        android:layout_width="130dp"
         android:layout_height="48dp"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="159dp"
         android:layout_marginBottom="80dp"
         android:backgroundTint="#00BCD4"
-        android:onClick="upload_database"
-        android:text="Upload to Database"
+        android:onClick="add_to_database"
+        android:text="Add"
         android:textSize="20sp"
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.152"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/productspecdisplay"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.048"
+        tools:visibility="invisible" />
+
+    <Button
+        android:id="@+id/rembtn"
+        android:layout_width="130dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="80dp"
+        android:backgroundTint="#00BCD4"
+        android:onClick="delete_from_database"
+        android:text="Remove"
+        android:textSize="20sp"
+        app:cornerRadius="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.795"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/productspecdisplay"
+        app:layout_constraintVertical_bias="0.048"
         tools:visibility="invisible" />
 
     <Button
@@ -111,9 +130,9 @@
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/uploadbtn"
+        app:layout_constraintTop_toBottomOf="@+id/addbtn"
+        app:layout_constraintVertical_bias="0.533"
         tools:visibility="invisible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

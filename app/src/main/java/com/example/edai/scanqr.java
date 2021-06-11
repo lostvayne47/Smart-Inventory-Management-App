@@ -1,12 +1,10 @@
 package com.example.edai;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.service.autofill.Dataset;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -15,26 +13,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-
 public class scanqr extends AppCompatActivity {
-    Button scanbtn,uploadbtn,btnLogout;
+    Button scanbtn, addbtn,btnLogout, rembtn;
     TextView productspecview;
 
-    boolean update_flag,filter_flag=true;
+    boolean io_flag,filter_flag=true;
     public static TextView scantxt;                                 //declaring scantext for input qr code
     public static String[] arrOfStr;                                //declaring array to store incoming data
     public static EditText productspecdisplay;                     //declaring multitext to display data
+    int temp=0;
     DatabaseReference data_reff;                                   //declaring database objects
     Inventory products;                                            //declaring products object
 
@@ -58,22 +52,65 @@ public class scanqr extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(),scannerView.class));
         productspecview.setVisibility(View.VISIBLE);
         productspecdisplay.setVisibility(View.VISIBLE);
-        uploadbtn.setVisibility(View.VISIBLE);
+        addbtn.setVisibility(View.VISIBLE);
+        rembtn.setVisibility(View.VISIBLE);
         btnLogout.setVisibility(View.VISIBLE);
 
     }
-
-    public void upload_database(View view) {
-
-        //call update data function to check if the product is already present
-        //if already present then only update quantity in the same branch/node
-        //need to get reference of the same branch
+    public void add_to_database(View view){
+        io_flag=true;
         filter_flag=true;
-        update_data();
+        update_add_data();
 
     }
 
-    public void update_data(){
+    public void delete_from_database(View view){
+        io_flag=false;
+        filter_flag=true;
+        update_rem_data();
+    }
+
+    public void update_rem_data(){
+
+        data_reff.child(arrOfStr[0]).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                Inventory inventory=snapshot.getValue(Inventory.class);
+                if(inventory==null){
+                    Log.i("Info","Data not present");
+                    Toast.makeText(scanqr.this, "Product not present", Toast.LENGTH_LONG).show();
+                }else {
+                    if (filter_flag) {
+                        int temp = inventory.getProduct_quantity();
+                        arrOfStr[2] = Integer.toString(temp - Integer.parseInt(arrOfStr[2]));
+                        if(Integer.parseInt(arrOfStr[2])<0){
+                            arrOfStr[2]="0";
+                            Toast.makeText(scanqr.this, "Quantity is already zero", Toast.LENGTH_LONG).show();
+                        }else{
+
+                        products = new Inventory(Integer.parseInt(arrOfStr[0]), arrOfStr[1], arrOfStr[3], arrOfStr[4], Integer.parseInt(arrOfStr[2]));
+                        data_reff.child(String.valueOf(products.getProduct_Id())).setValue(products);
+
+                        Log.i("Info", "Quantity Decremented");
+                        inventory.product_display();
+                        Toast.makeText(scanqr.this, "Quantity is Decremented", Toast.LENGTH_LONG).show();
+                        filter_flag = false;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    public void update_add_data(){
+        temp = 0;
 
         data_reff.child(arrOfStr[0]).addValueEventListener(new ValueEventListener() {
             @Override
@@ -85,21 +122,21 @@ public class scanqr extends AppCompatActivity {
 
                     products = new Inventory(Integer.parseInt(arrOfStr[0]), arrOfStr[1], arrOfStr[3], arrOfStr[4], Integer.parseInt(arrOfStr[2]));
                     data_reff.child(String.valueOf(products.getProduct_Id())).setValue(products);
-                    Log.i("Info","Data Added");
-                    Toast.makeText(scanqr.this, "Data uploaded successfully", Toast.LENGTH_LONG).show();
+                    Log.i("Info","Product Added");
+                    Toast.makeText(scanqr.this, "Product uploaded successfully", Toast.LENGTH_LONG).show();
                     filter_flag=false;
                 }else
                 {
                     if(filter_flag) {
-                        int temp=inventory.getProduct_quantity();
+                        temp=inventory.getProduct_quantity();
                         arrOfStr[2]=Integer.toString(temp+Integer.parseInt(arrOfStr[2]));
 
                         products = new Inventory(Integer.parseInt(arrOfStr[0]), arrOfStr[1], arrOfStr[3], arrOfStr[4], Integer.parseInt(arrOfStr[2]));
                         data_reff.child(String.valueOf(products.getProduct_Id())).setValue(products);
 
-                        Log.i("Info","Data Incremented");
+                        Log.i("Info","Quantity Incremented");
                         inventory.product_display();
-                        Toast.makeText(scanqr.this, "Data is Incremented", Toast.LENGTH_LONG).show();
+                        Toast.makeText(scanqr.this, "Quantity is Incremented", Toast.LENGTH_LONG).show();
                         filter_flag=false;
                     }
 
@@ -121,14 +158,16 @@ public class scanqr extends AppCompatActivity {
 
         scantxt=(TextView)findViewById(R.id.scantext);               //declaring scantext for input qr code
         scanbtn=(Button) findViewById(R.id.scanbtn);
-        uploadbtn=(Button)findViewById(R.id.uploadbtn);
+        addbtn =(Button)findViewById(R.id.addbtn);
+        rembtn =(Button)findViewById(R.id.rembtn);
         productspecview=(TextView)findViewById(R.id.productspecview);
         productspecdisplay =(EditText)findViewById(R.id.productspecdisplay);
         btnLogout = findViewById(R.id.buttonLogout);
 
         productspecview.setVisibility(View.INVISIBLE);
         productspecdisplay.setVisibility(View.INVISIBLE);
-        uploadbtn.setVisibility(View.INVISIBLE);
+        addbtn.setVisibility(View.INVISIBLE);
+        rembtn.setVisibility(View.INVISIBLE);
         btnLogout.setVisibility(View.INVISIBLE);
 
         data_reff = FirebaseDatabase.getInstance().getReference().child("Inventory");
