@@ -15,11 +15,13 @@
         android:text="Sign Up"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="450dp"
+        android:backgroundTint="#00BCD4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:cornerRadius="50dp"
         app:layout_constraintVertical_bias="0.841" />
 
     <EditText
@@ -32,7 +34,8 @@
         android:ems="10"
         android:hint="Email: "
         android:inputType="textEmailAddress"
-        android:textColorHint="#000000"
+        android:textColorHint="#FFFFFF"
+        android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.505"
@@ -49,7 +52,8 @@
         android:ems="10"
         android:hint="Password: "
         android:inputType="textPassword"
-        android:textColorHint="#000000"
+        android:textColorHint="#FFFFFF"
+        android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.505"
@@ -65,7 +69,7 @@
         android:layout_marginBottom="35dp"
         android:text="Already have an account? Login here"
         android:textAlignment="center"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textStyle="bold" />
 
     <ImageView

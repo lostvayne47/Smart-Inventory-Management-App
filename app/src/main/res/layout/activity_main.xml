@@ -4,35 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Animation"
-    android:background="#1261A0">
+    tools:context=".Animation">
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="214dp"
+        android:layout_height="210dp"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"
-        android:src="@drawable/logo"
-        tools:ignore="MissingConstraints" />
+        android:src="@drawable/logo" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="348dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="399dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginBottom="148dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="150dp"
         android:fontFamily="sans-serif-black"
-        android:text="Smart Inventory Management"
+        android:text=" INVENTORY MANAGEMENT"
         android:textAlignment="center"
-        android:textColor="#009688"
-        android:textSize="50sp" />
+        android:textColor="#00BCD4"
+        android:textSize="30dp" />
 
 
 </RelativeLayout>

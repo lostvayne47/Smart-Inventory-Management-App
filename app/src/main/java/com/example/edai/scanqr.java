@@ -35,7 +35,7 @@ public class scanqr extends AppCompatActivity {
     public static TextView scantxt;                                 //declaring scantext for input qr code
     public static String[] arrOfStr;                                //declaring array to store incoming data
     public static EditText productspecdisplay;                     //declaring multitext to display data
-    DatabaseReference data_reff,update_data;                                   //declaring database objects
+    DatabaseReference data_reff;                                   //declaring database objects
     Inventory products;                                            //declaring products object
 
 
@@ -74,17 +74,7 @@ public class scanqr extends AppCompatActivity {
     }
 
     public void update_data(){
-//        data_reff.child(String.valueOf(arrOfStr[0])).child("product_quantity").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DataSnapshot> task) {
-//                if (!task.isSuccessful()) {
-//                    Log.i("firebase", "No Duplicate Found", task.getException());
-//                }
-//                else {
-//                    Log.i("firebase", String.valueOf(task.getResult().getValue()));
-//                }
-//            }
-//        });
+
         data_reff.child(arrOfStr[0]).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -95,14 +85,22 @@ public class scanqr extends AppCompatActivity {
 
                     products = new Inventory(Integer.parseInt(arrOfStr[0]), arrOfStr[1], arrOfStr[3], arrOfStr[4], Integer.parseInt(arrOfStr[2]));
                     data_reff.child(String.valueOf(products.getProduct_Id())).setValue(products);
-                    filter_flag=false;
                     Log.i("Info","Data Added");
                     Toast.makeText(scanqr.this, "Data uploaded successfully", Toast.LENGTH_LONG).show();
+                    filter_flag=false;
                 }else
                 {
                     if(filter_flag) {
+                        int temp=inventory.getProduct_quantity();
+                        arrOfStr[2]=Integer.toString(temp+Integer.parseInt(arrOfStr[2]));
+
+                        products = new Inventory(Integer.parseInt(arrOfStr[0]), arrOfStr[1], arrOfStr[3], arrOfStr[4], Integer.parseInt(arrOfStr[2]));
+                        data_reff.child(String.valueOf(products.getProduct_Id())).setValue(products);
+
+                        Log.i("Info","Data Incremented");
                         inventory.product_display();
-                        Toast.makeText(scanqr.this, "Data is already present", Toast.LENGTH_LONG).show();
+                        Toast.makeText(scanqr.this, "Data is Incremented", Toast.LENGTH_LONG).show();
+                        filter_flag=false;
                     }
 
                 }

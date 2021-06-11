@@ -49,10 +49,10 @@ public class scannerView extends AppCompatActivity implements ZXingScannerView.R
 
     @Override
     public void handleResult(Result rawResult) {
-        String data=rawResult.getText().toString();
+        //String data=rawResult.getText().toString();
         scanqr.scantxt.setText(rawResult.getText());
-    onBackPressed();//For further actions on data
-        Toast.makeText(this,rawResult.getText(),Toast.LENGTH_SHORT).show();
+        onBackPressed();//For further actions on data
+        //Toast.makeText(this,rawResult.getText(),Toast.LENGTH_SHORT).show();
         scanqr.arrOfStr = rawResult.getText().split("_", 5);
 
         scanqr.UpdateText();
